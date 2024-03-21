@@ -11,12 +11,25 @@ function App() {
   const [tasks, setTasks] = useState("");
   const [editMode,setEditMode] = useState(false);
   const [id,setId] = useState("");
+  const [error, setError] = useState(null);
 
-  
+  const validForm=()=>{
+    let isValid=true;
+    setError(null);
+    if(isEmpty(task)){
+      setError("debes ingresar una tarea");
+      isValid=false;
+    }
+    return isValid;
+  }
   const addTask=(e)=>{
     e.preventDefault();
-    if(isEmpty(task)){
+    /*if(isEmpty(task)){
       //console.log('vacio');
+      setError("debes ingresar una tarea");
+      return;
+    }*/
+    if(!validForm()){ 
       return;
     }
     //console.log('Ok')
@@ -42,6 +55,11 @@ function App() {
 
   const grabarTarea=(e)=>{
     e.preventDefault();
+
+    if(!validForm()){ 
+      return;
+    }
+
     if(isEmpty(task)){
       //console.log('vacio');
       return;
@@ -64,7 +82,7 @@ function App() {
       <div className="row">
         <div className="col-8">
           <h4 className="text-center">Lista de Tareas</h4>
-          {size(tasks)===0 ? (<h5>No hay tareas</h5>) :
+          {size(tasks)===0 ? (<li className="list-group-item">No hay tareas</li>) :
           (
           <ul className="list-group">
             {
@@ -90,6 +108,9 @@ function App() {
             { editMode ? "Editar Tarea":"Agregar Tarea" }
           </h4>
           <form onSubmit={ editMode ? grabarTarea : addTask}>
+            {
+              error && <span className="text-danger mt-2">{error}</span>
+            }
             <input 
               type="text" 
               className="form-control mb-2" 
