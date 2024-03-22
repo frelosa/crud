@@ -3,24 +3,9 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics"; //opcional
 */
-/*
-import { firebase } from "firebase/app";
-import 'firebase/storage'; //habilitar la DB
-*/
-/*
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-*/
-import firebaseApp from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import "firebase/compat/database";
-import "firebase/compat/storage";
+import firebase from "firebase/app";
+import 'firebase/storage';
 
-
-
-//Configuracion de que arrojo el sitio firebase en la web
 const firebaseConfig = {
     apiKey: "AIzaSyCCdOUOPZpTlnFY8ZwNicSwzCe-jrnjzlk",
     authDomain: "curso-react-crud-76fda.firebaseapp.com",
@@ -37,5 +22,4 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 */
 
-//export const firebaseApp = firebase.initializeApp(firebaseConfig);
-export default firebaseApp.initializeApp(firebaseConfig);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);

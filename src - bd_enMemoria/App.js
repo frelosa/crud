@@ -1,15 +1,8 @@
-import React from "react";
-import { useState, useCallback, useEffect } from "react";
-//import firebaseApp from './firebase';
-//import {db} from './firebase'
-//import * as firebase from 'firebase/app';
 
+import { useState, useCallback } from "react";
 //import isEmpty from 'lodash/isEmpty';
 import { isEmpty,size } from "lodash";
 import shortid from "shortid";
-import { estadoUsuario } from "./actions";
-import { getCollection } from "./actions";
-//import { collection } from "firebase/compat/firestore";
 
 
 
@@ -19,24 +12,6 @@ function App() {
   const [editMode,setEditMode] = useState(false);
   const [id,setId] = useState("");
   const [error, setError] = useState(null);
-  estadoUsuario(); 
-  useEffect(()=>{
-    (async()=>{
-      const result=await getCollection("tarea")
-      console.log(result);
-    })()
-
-  },[])
-
-  /*firebaseApp.auth().onAuthStateChanged(user=>{
-    console.log('Hola ' + user);
-    user ? console.log('usuario logeado'): console.log('usuario no logeado')
-
-  })*/
-  
-  //--------------------
-
-
 
   const validForm=()=>{
     let isValid=true;
