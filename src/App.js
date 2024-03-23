@@ -5,10 +5,10 @@ import { useState, useCallback, useEffect } from "react";
 //import * as firebase from 'firebase/app';
 
 //import isEmpty from 'lodash/isEmpty';
-import { isEmpty,size } from "lodash";
-import shortid from "shortid";
-import { estadoUsuario } from "./actions";
-import { getCollection } from "./actions";
+import { isEmpty,result,size } from "lodash";
+import shortid from "shortid"; //genera id para guardar en memoria
+import { deleteDocumento, estadoUsuario, updateDocumento } from "./actions";
+import { getCollection,addDocumento } from "./actions";
 //import { collection } from "firebase/compat/firestore";
 
 
@@ -23,7 +23,10 @@ function App() {
   useEffect(()=>{
     (async()=>{
       const result=await getCollection("tarea")
-      console.log(result);
+      if(result.statusResponse){
+        setTasks(result.data); //pasando todos las filas para pintarlas en el formulario
+        console.log(result);
+      }
     })()
 
   },[])
@@ -47,7 +50,8 @@ function App() {
     }
     return isValid;
   }
-  const addTask=(e)=>{
+  //--------------------
+  const addTask_enMemoria=(e)=>{
     e.preventDefault();
     /*if(isEmpty(task)){
       //console.log('vacio');
@@ -66,8 +70,34 @@ function App() {
     setTask("");
     console.log(task);
   }
+//-----------------
+const addTask=async(e)=>{
+  e.preventDefault();
+ 
+  if(!validForm()){ 
+    return;
+  }
+  //console.log('Ok')
+  const result=await addDocumento("tarea",{name: task});
+  if(!result.statusResponse){
+    setError(result.error);
+    return;
+  }
+  
+  setTasks([...tasks,{id:result.data.id,name: task}]);
+  setTask("");
+  console.log(task);
+}
 
-  const deleteTask=(id)=>{
+
+
+  const deleteTask=async(id)=>{
+    const result = await deleteDocumento("tarea",id)
+    if(!result.statusResponse){
+      setError(result.error);
+      return;
+    }
+
     const filtrarTareas=tasks.filter(task=>task.id !== id);
     setTasks(filtrarTareas);
   }
@@ -78,7 +108,8 @@ function App() {
     setId(laTarea.id);
   }
 
-  const grabarTarea=(e)=>{
+   
+  const grabarTarea=async(e)=>{
     e.preventDefault();
 
     if(!validForm()){ 
@@ -90,6 +121,12 @@ function App() {
       return;
     }
     
+    const result = await updateDocumento("tarea",id,{name: task})
+    if(!result.statusResponse){
+      setError(result.error);
+      return;
+    }
+
     //setTasks([...tasks,newTask]);
     const editarTareas = tasks.map(item => item.id === id ?{ id,name:task } : item);
     setTasks(editarTareas);
@@ -121,9 +158,7 @@ function App() {
                     onClick={()=>editTarea(tarea)}
                   >Editar</button>
                 </li>
-
               )) 
-          
             }
           </ul>
           )}
