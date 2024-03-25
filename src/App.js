@@ -147,19 +147,21 @@ const addTask=async(e)=>{
           {size(tasks)===0 ? (<li className="list-group-item">No hay tareas</li>) :
           (
           <ul className="list-group">
-            {
+            
+            { 
               tasks.map((tarea)=>(
                 <li className="list-group-item" key={tarea.id}>
                   <span className="lead">{tarea.name}</span>
-                  <button className="btn btn-danger btn-sm float-right mx-2"
+                  
+                  <button className="btn btn-danger btn-sm float-end mx-2 "
                     onClick={()=>deleteTask(tarea.id)}
                   >Eliminar</button>
-                  <button className="btn btn-warning btn-sm float-right"
+                  <button className="btn btn-warning float-end btn-sm "
                     onClick={()=>editTarea(tarea)}
                   >Editar</button>
                 </li>
               )) 
-            }
+               }
           </ul>
           )}
         </div>
@@ -180,8 +182,8 @@ const addTask=async(e)=>{
             />
             
             <button 
-              className={ editMode ? "btn btn-warning btn-block":  "btn btn-dark btn-block"} 
-              type="submit"
+              className={ editMode ? "btn btn-warning btn-block col-12 mx-auto":  "btn btn-dark btn-block col-12 mx-auto"} 
+              type="submit" 
             >
               { editMode ? "Guardar" : "Agregar"}
             </button>
